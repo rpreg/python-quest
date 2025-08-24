@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Python Quest - Aventura Espacial de Programación</title>
+    <meta name="description" content="Aprende Python mientras juegas en el espacio. Videojuego educativo para estudiantes de secundaria.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <h1 class="loading-title">🚀 PYTHON QUEST 🚀</h1>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text">Cargando sistemas de la nave...</p>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="game-container" class="game-container hidden">
+        <!-- Game HUD -->
+        <div id="game-hud" class="game-hud">
+            <div class="hud-content">
+                <!-- Top Stats Bar -->
+                <div class="stats-bar">
+                    <div class="stats-left">
+                        <div class="score-display">
+                            PUNTOS: <span id="score">0</span>
+                        </div>
+                        <div class="lives-display">
+                            VIDAS: <span id="lives">❤️❤️❤️</span>
+                        </div>
+                        <div class="level-display">
+                            NIVEL: <span id="level">1</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-right">
+                        <div class="status-indicator">
+                            <div id="status-dot" class="status-dot status-playing"></div>
+                            <span id="status-text">EN LÍNEA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Panel -->
+                <div id="question-panel" class="question-panel hidden">
+                    <div class="question-content">
+                        <div class="question-icon">Q</div>
+                        <div class="question-details">
+                            <h2 id="question-text" class="question-text"></h2>
+                            <div id="options-grid" class="options-grid"></div>
+                            <div class="question-hint">
+                                💡 Dispara a los asteroides con la respuesta correcta para ganar puntos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Over Panel -->
+                <div id="game-over-panel" class="game-over-panel hidden">
+                    <h2 class="game-over-title">🚀 MISIÓN TERMINADA 🚀</h2>
+                    <div class="game-over-stats">
+                        <p>Puntuación Final: <span id="final-score" class="score-highlight">0</span></p>
+                        <p>Nivel Alcanzado: <span id="final-level" class="level-highlight">1</span></p>
+                        <p class="game-over-message">¡Buen trabajo, piloto espacial! Has defendido la galaxia del conocimiento.</p>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div id="instructions" class="instructions hidden">
+                    <div class="instruction-item">🎮 USA LAS FLECHAS PARA MOVERTE</div>
+                    <div class="instruction-separator">•</div>
+                    <div class="instruction-item">🚀 ESPACIO PARA DISPARAR</div>
+                    <div class="instruction-separator">•</div>
+                    <div class="instruction-item">🎯 DISPARA A LA RESPUESTA CORRECTA</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Canvas -->
+        <div class="canvas-container">
+            <canvas id="game-canvas" width="800" height="600"></canvas>
+            
+            <!-- Pause Overlay -->
+            <div id="pause-overlay" class="pause-overlay hidden">
+                <div class="pause-content">
+                    <h2 class="pause-title">⏸️ PAUSA</h2>
+                    <p class="pause-text">Presiona ESC para continuar</p>
+                </div>
+            </div>
+            
+            <!-- Controls Info -->
+            <div class="controls-info">
+                <p>← → Mover nave | Espacio: Disparar | ESC: Pausa</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Menu -->
+    <div id="game-menu" class="game-menu">
+        <div class="menu-content">
+            <!-- Title -->
+            <div class="game-title">
+                <h1 class="title-main">🚀 PYTHON QUEST 🚀</h1>
+                <p class="title-subtitle">Aventura Espacial de Programación</p>
+                <div class="title-line"></div>
+            </div>
+
+            <!-- Mission Brief -->
+            <div id="mission-brief" class="mission-brief">
+                <div class="mission-card">
+                    <h2 class="mission-title">🎯 MISIÓN</h2>
+                    <p class="mission-text">
+                        Eres un piloto espacial encargado de defender la galaxia del conocimiento. 
+                        Los asteroides contienen preguntas sobre Python. ¡Dispara a las respuestas correctas 
+                        y evita las incorrectas para ganar puntos y avanzar de nivel!
+                    </p>
+                </div>
+                
+                <div class="scoring-grid">
+                    <div class="scoring-item scoring-correct">
+                        <div class="scoring-label">✅ RESPUESTA CORRECTA</div>
+                        <div class="scoring-points">+100 puntos</div>
+                    </div>
+                    <div class="scoring-item scoring-incorrect">
+                        <div class="scoring-label">❌ RESPUESTA INCORRECTA</div>
+                        <div class="scoring-points">-1 vida</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pause Info -->
+            <div id="pause-info" class="pause-info hidden">
+                <h2 class="pause-info-title">⏸️ PAUSA</h2>
+                <div class="pause-stats">
+                    <p>Puntos actuales: <span id="pause-score" class="score-highlight">0</span></p>
+                    <p>Nivel: <span id="pause-level" class="level-highlight">1</span></p>
+                </div>
+            </div>
+
+            <!-- Game Over Info -->
+            <div id="final-info" class="final-info hidden">
+                <h2 class="final-info-title">💥 GAME OVER 💥</h2>
+                <div class="final-stats">
+                    <p>Puntuación Final: <span id="menu-final-score" class="score-highlight">0</span></p>
+                    <p>Nivel Alcanzado: <span id="menu-final-level" class="level-highlight">1</span></p>
+                    <div class="final-line"></div>
+                    <p id="final-message" class="final-message">
+                        ¡No te rindas, cadete! Cada misión te hace más fuerte en Python.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="menu-buttons">
+                <button id="start-button" class="btn btn-cosmic">
+                    🚀 INICIAR MISIÓN
+                </button>
+                <button id="continue-button" class="btn btn-cosmic hidden">
+                    ▶️ CONTINUAR MISIÓN
+                </button>
+                <button id="restart-button" class="btn btn-cosmic hidden">
+                    🔄 NUEVA MISIÓN
+                </button>
+                <button id="menu-button" class="btn btn-outline hidden">
+                    🏠 MENÚ PRINCIPAL
+                </button>
+            </div>
+
+            <!-- Controls Info -->
+            <div id="controls-info" class="controls-card">
+                <h3 class="controls-title">🎮 CONTROLES</h3>
+                <div class="controls-list">
+                    <div>← → Mover nave espacial</div>
+                    <div>ESPACIO Disparar láser</div>
+                    <div>ESC Pausar juego</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Footer -->
+    <div class="game-footer">
+        <div class="footer-content">
+            <div>🐍 Python Quest - Aprende programación mientras juegas</div>
+            <div>Hecho con ❤️ para estudiantes de secundaria</div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+     <script>
+        // Set browser zoom to 75% for optimal game display
+        document.body.style.zoom = "75%";
+    </script>
+    <script src="questions.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
